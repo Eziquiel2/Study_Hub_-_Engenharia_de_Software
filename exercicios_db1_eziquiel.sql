@@ -1,4 +1,5 @@
 -- Nome: Eziquiel Coelho de Oliveira RA: 22650851
+-- versao 2.0
 
 -- Questão 01. Quantas linhas da tabela fato_vendas não têm cliente identificado (id_cliente vazio)?
 
