@@ -300,8 +300,8 @@ HAVING COUNT(*) > 300
 ORDER BY TOTAL_VENDAS DESC;
 
 -- Questão 21. Quais clientes (id_cliente) têm 70 ou mais linhas de venda? Mostre o id_cliente e
--- a quantidade, da maior para a menor; em caso de empate, pelo menor id_cliente. Desconsidere as
--- vendas sem cliente.
+-- a quantidade, da maior para a menor; em caso de empate, pelo menor id_cliente. 
+-- Desconsidere as vendas sem cliente.
 -- **** com ajuda da IA para o IS NOT NULL ****
 
 SELECT id_cliente, COUNT(*) AS qtd
@@ -311,20 +311,31 @@ GROUP BY id_cliente
 HAVING COUNT(*) >= 70
 ORDER BY qtd DESC, id_cliente ASC
 
+-- ## REVISÃO
+
+SELECT id_cliente, 
+	COUNT(*) AS TOTAL_ITENS
+FROM fato_vendas
+WHERE id_cliente IS NOT NULL
+GROUP BY id_cliente
+HAVING COUNT(*) >= 70
+ORDER BY TOTAL_ITENS DESC, id_cliente ASC
 
 -- Questão 22. Quantas linhas de venda tiveram desconto (maior que zero) e qual foi o valor médio desse
 -- desconto? Arredonde a média para 2 casas decimais.
 -- **** com ajuda da IA para o ROUND ****
-SELECT * FROM fato_vendas
 
 SELECT COUNT(*) AS qtd, ROUND(AVG(desconto), 2) AS media_desconto
 FROM fato_vendas
 WHERE desconto > 0
 
-
 -- ## REVISÃO
 
-
+SELECT 
+	COUNT(*) AS VENDAS_COM_DESCONTO,
+	ROUND(AVG(desconto), 2) AS DESCONTO_MEDIO
+FROM fato_vendas
+WHERE desconto > 0;
 
 
 -- Questão 23. Qual foi o menor e o maior valor_total de uma linha de venda em dezembro de
@@ -333,6 +344,13 @@ WHERE desconto > 0
 SELECT MAX(valor_total) AS maior_valor, MIN(valor_total) AS menor_valor
 FROM fato_vendas
 
+-- ## REVISÃO
+
+SELECT 
+	MAX(valor_total) AS MAIOR_VENDA,
+	MIN(valor_total) AS MENOR_VENDA
+FROM fato_vendas
+WHERE data_venda BETWEEN '2025-12-01' AND '2025-12-31';
 
 -- Questão 24. Quantas linhas de venda foram registradas no dia 24/12/2025 e qual foi o faturamento
 -- desse dia?
@@ -343,7 +361,9 @@ WHERE data_venda = '2025-12-24'
 
 -- ## REVISÃO
 
-
+SELECT COUNT(*) as qtd_linhas, SUM(valor_total) AS faturamento
+FROM fato_vendas
+WHERE data_venda = '2025-12-24'
 
 
 -- Questão 25. Considerando as vendas do canal Site em 2025 que tiveram desconto, mostre:
